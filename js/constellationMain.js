@@ -1,95 +1,69 @@
+// constellationMain.js - 메인 애플리케이션 (수정된 버전)
+
 class ConstellationMain {
     createQuadrantGuide() {
-            // 화면 4분할 가이드 오버레이
-            const guide = document.createElement('div');
-            guide.id = 'quadrant-guide';
-            guide.style.position = 'fixed';
-            guide.style.top = '0';
-            guide.style.left = '0';
-            guide.style.width = '100%';
-            guide.style.height = '100%';
-            guide.style.pointerEvents = 'none';
-            guide.style.zIndex = '10';
-            
-            // 북쪽 라벨
-            const northLabel = document.createElement('div');
-            northLabel.textContent = 'NORTH (북)';
-            northLabel.style.position = 'absolute';
-            northLabel.style.top = '10%';
-            northLabel.style.left = '25%';
-            northLabel.style.transform = 'translate(-50%, -50%)';
-            northLabel.style.color = '#4ae24a';
-            northLabel.style.fontSize = '14px';
-            northLabel.style.fontWeight = 'bold';
-            northLabel.style.textShadow = '2px 2px 4px rgba(0,0,0,0.8)';
-            northLabel.style.opacity = '0.6';
-            guide.appendChild(northLabel);
-            
-            // 동쪽 라벨
-            const eastLabel = document.createElement('div');
-            eastLabel.textContent = 'EAST (동)';
-            eastLabel.style.position = 'absolute';
-            eastLabel.style.top = '10%';
-            eastLabel.style.right = '25%';
-            eastLabel.style.transform = 'translate(50%, -50%)';
-            eastLabel.style.color = '#e24a4a';
-            eastLabel.style.fontSize = '14px';
-            eastLabel.style.fontWeight = 'bold';
-            eastLabel.style.textShadow = '2px 2px 4px rgba(0,0,0,0.8)';
-            eastLabel.style.opacity = '0.6';
-            guide.appendChild(eastLabel);
-            
-            // 서쪽 라벨
-            const westLabel = document.createElement('div');
-            westLabel.textContent = 'WEST (서)';
-            westLabel.style.position = 'absolute';
-            westLabel.style.bottom = '10%';
-            westLabel.style.left = '25%';
-            westLabel.style.transform = 'translate(-50%, 50%)';
-            westLabel.style.color = '#e2a54a';
-            westLabel.style.fontSize = '14px';
-            westLabel.style.fontWeight = 'bold';
-            westLabel.style.textShadow = '2px 2px 4px rgba(0,0,0,0.8)';
-            westLabel.style.opacity = '0.6';
-            guide.appendChild(westLabel);
-            
-            // 남쪽 라벨
-            const southLabel = document.createElement('div');
-            southLabel.textContent = 'SOUTH (남)';
-            southLabel.style.position = 'absolute';
-            southLabel.style.bottom = '10%';
-            southLabel.style.right = '25%';
-            southLabel.style.transform = 'translate(50%, 50%)';
-            southLabel.style.color = '#4a90e2';
-            southLabel.style.fontSize = '14px';
-            southLabel.style.fontWeight = 'bold';
-            southLabel.style.textShadow = '2px 2px 4px rgba(0,0,0,0.8)';
-            southLabel.style.opacity = '0.6';
-            guide.appendChild(southLabel);
-            
-            // 수직 십자선
-            const crosshairV = document.createElement('div');
-            crosshairV.style.position = 'absolute';
-            crosshairV.style.top = '0';
-            crosshairV.style.left = '50%';
-            crosshairV.style.width = '1px';
-            crosshairV.style.height = '100%';
-            crosshairV.style.background = 'rgba(255,255,255,0.1)';
-            guide.appendChild(crosshairV);
-            
-            // 수평 십자선
-            const crosshairH = document.createElement('div');
-            crosshairH.style.position = 'absolute';
-            crosshairH.style.top = '50%';
-            crosshairH.style.left = '0';
-            crosshairH.style.width = '100%';
-            crosshairH.style.height = '1px';
-            crosshairH.style.background = 'rgba(255,255,255,0.1)';
-            guide.appendChild(crosshairH);
-            
-            document.body.appendChild(guide);
-    }// constellationMain.js - 메인 애플리케이션 (핸드 트래킹 개선 버전)
+        // 화면 4분할 가이드 오버레이
+        const guide = document.createElement('div');
+        guide.id = 'quadrant-guide';
+        guide.style.position = 'fixed';
+        guide.style.top = '0';
+        guide.style.left = '0';
+        guide.style.width = '100%';
+        guide.style.height = '100%';
+        guide.style.pointerEvents = 'none';
+        guide.style.zIndex = '10';
+        
+        // 각 사분면 라벨
+        const quadrants = [
+            { position: 'bottom: 10%; left: 25%;', text: 'SOUTH (남): 여름', color: '#e2a54a' },
+            { position: 'bottom: 10%; right: 25%;', text: 'WEST (서): 가을', color: '#4a90e2' },
+            { position: 'top: 10%; right: 25%;', text: 'NORTH (북): 겨울', color: '#e24a4a' },
+            { position: 'top: 10%; left: 25%;', text: 'EAST (동): 봄', color: '#4ae24a' }
+        ];
+        
+        quadrants.forEach(q => {
+            const label = document.createElement('div');
+            label.style.cssText = `
+                position: absolute;
+                ${q.position}
+                transform: translate(-50%, -50%);
+                color: ${q.color};
+                font-size: 14px;
+                font-weight: bold;
+                text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
+                opacity: 0.6;
+            `;
+            label.textContent = q.text;
+            guide.appendChild(label);
+        });
+        
+        // 십자선
+        const crosshair = document.createElement('div');
+        crosshair.style.cssText = `
+            position: absolute;
+            top: 0;
+            left: 50%;
+            width: 1px;
+            height: 100%;
+            background: rgba(255,255,255,0.1);
+        `;
+        guide.appendChild(crosshair);
+        
+        const crosshairH = document.createElement('div');
+        crosshairH.style.cssText = `
+            position: absolute;
+            top: 50%;
+            left: 0;
+            width: 100%;
+            height: 1px;
+            background: rgba(255,255,255,0.1);
+        `;
+        guide.appendChild(crosshairH);
+        
+        document.body.appendChild(guide);
+    }
 }
+
 class ConstellationExperience {
     constructor() {
         // 핵심 Three.js 객체들
@@ -100,7 +74,6 @@ class ConstellationExperience {
         this.scene = new THREE.Scene();
         this.scene.background = new THREE.Color(0x0f0f23);
         this.createStarField(this.scene);
-
         
         // MediaPipe 관련
         this.hands = null;
@@ -232,10 +205,10 @@ class ConstellationExperience {
         try {
             const intro = document.getElementById('intro-screen');
             gsap.to(intro, {
-            opacity: 0,
-            duration: 1,
-            delay: 1,
-            onComplete: () => intro.remove()
+                opacity: 0,
+                duration: 1,
+                delay: 1,
+                onComplete: () => intro.remove()
             });
 
             document.getElementById('status').textContent = 'Three.js 초기화 중...';
@@ -345,7 +318,7 @@ class ConstellationExperience {
                             const percent = (progressEvent.loaded / progressEvent.total * 100).toFixed(0);
                             const bar = document.getElementById('loading-bar');
                             if (bar) {
-                            bar.style.width = `${percent}%`;
+                                bar.style.width = `${percent}%`;
                             }
                             console.log(`Loading ${direction}: ${percent}%`);
                         },
@@ -399,8 +372,6 @@ class ConstellationExperience {
             console.log('모든 모델 로드 실패, 폴백 모델 생성');
             this.createFallbackModel('center');
         }
-
-        // document.getElementById('loading-bar').style.width = `${(progress.loaded / progress.total * 100).toFixed(0)}%`;
     }
 
     createFallbackModel(direction) {
@@ -533,17 +504,19 @@ class ConstellationExperience {
         } else {
             console.warn(`${zoomedModelKey} 모델을 찾을 수 없습니다.`);
         }
+
+        const originalSwitchToZoomedModel = ConstellationExperience.prototype.switchToZoomedModel;
+        ConstellationExperience.prototype.switchToZoomedModel = function(direction) {
+            // 기존 로직 실행
+            originalSwitchToZoomedModel.call(this, direction);
+            
+            // _28 모델 상세 설명 표시
+            this.show28ModelDescription(direction);
+            
+            console.log(`${direction} _28 모델로 전환 및 상세 설명 표시`);
+        };
     }
 
-    getDirectionName(direction) {
-        const directionNames = {
-            east: '동쪽',
-            west: '서쪽',
-            north: '북쪽',
-            south: '남쪽'
-        };
-        return directionNames[direction] || direction;
-    }
     createHandCursors() {
         // 왼손 커서 (파란색)
         const leftCursorGeometry = new THREE.RingGeometry(0.05, 0.08, 32);
@@ -856,6 +829,7 @@ class ConstellationExperience {
         const dz = landmark1.z - landmark2.z;
         return Math.sqrt(dx * dx + dy * dy + dz * dz);
     }
+
     detectVGesture() {
         let vGestureCount = 0;
         
@@ -883,10 +857,6 @@ class ConstellationExperience {
                 if (this.isZoomed) {
                     // _28 모델에서 원래 모델로 복귀
                     this.returnToOriginalModel(this.currentDirection);
-                } else if (this.currentDirection !== 'center') {
-                    // 일반 모델에서 center로 복귀 (선택사항)
-                    // this.switchModel('center');
-                    // this.showMessage('중앙 모델로 복귀');
                 }
                 
                 // 시각적 피드백
@@ -986,37 +956,10 @@ class ConstellationExperience {
         // 카메라 위치 업데이트 (Z축은 유지)
         this.camera.position.x = newCameraX;
         this.camera.position.y = newCameraY;
-        // Z축은 변경하지 않음 - this.camera.position.z 유지
         
         // 누적 오프셋 업데이트
         this.panOffset.x = newCameraX - (this.zoomedCameraPositions[`${this.currentDirection}_28`]?.position.x || 0);
         this.panOffset.y = newCameraY - (this.zoomedCameraPositions[`${this.currentDirection}_28`]?.position.y || 0);
-        
-        // 디버그 정보
-        if (Math.abs(normalizedDeltaX) > 0.01 || Math.abs(normalizedDeltaY) > 0.01) {
-            console.log(`패닝 업데이트 - X: ${newCameraX.toFixed(2)}, Y: ${newCameraY.toFixed(2)}`);
-        }
-    }
-
-    stopPanning() {
-        if (!this.isPanning) return;
-        
-        console.log(`패닝 종료 - 최종 오프셋: X=${this.panOffset.x.toFixed(2)}, Y=${this.panOffset.y.toFixed(2)}`);
-        
-        this.isPanning = false;
-        this.panningHandIndex = -1;
-        this.panStartPosition = null;
-        this.cameraStartPosition = null;
-        
-        this.showPanningIndicator(false);
-    }
-
-    resetPanning() {
-        // 패닝 상태 초기화
-        this.panOffset = { x: 0, y: 0 };
-        this.stopPanning();
-        
-        console.log('패닝 오프셋 리셋');
     }
 
     smoothLandmarks(handIndex, landmarks) {
@@ -1069,14 +1012,6 @@ class ConstellationExperience {
         const maxDistance = 0.08; // 더 큰 임계값
         gestureInfo.pinchStrength = Math.max(0, 1 - (totalDistance / maxDistance));
         gestureInfo.isPinching = gestureInfo.pinchStrength > 0.5; // 낮은 임계값
-        
-        // 디버그 정보
-        if (handIndex === 0 || handIndex === 1) {
-            const debugInfo = `Hand ${handIndex}: distance=${totalDistance.toFixed(3)}, strength=${gestureInfo.pinchStrength.toFixed(2)}, pinching=${gestureInfo.isPinching}`;
-            if (gestureInfo.pinchStrength > 0.3) {
-                console.log(debugInfo);
-            }
-        }
         
         // 핀치 위치 계산 (엄지와 검지 중간점)
         gestureInfo.pinchPosition = {
@@ -1206,27 +1141,6 @@ class ConstellationExperience {
         this.playGestureSound(800, 0.1);
     }
 
-    // 제스처 사운드
-    playGestureSound(frequency, duration) {
-        try {
-            const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-            const oscillator = audioContext.createOscillator();
-            const gainNode = audioContext.createGain();
-            
-            oscillator.connect(gainNode);
-            gainNode.connect(audioContext.destination);
-            
-            oscillator.frequency.value = frequency;
-            gainNode.gain.setValueAtTime(0.1, audioContext.currentTime);
-            gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + duration);
-            
-            oscillator.start(audioContext.currentTime);
-            oscillator.stop(audioContext.currentTime + duration);
-        } catch (error) {
-            console.log('오디오 재생 실패:', error);
-        }
-    }
-
     // MediaPipe 좌표를 3D 월드 좌표로 변환
     convertToWorldPosition(normalizedCoord, handIndex) {
         // 화면 비율을 고려한 변환
@@ -1245,8 +1159,6 @@ class ConstellationExperience {
         const worldPos = new THREE.Vector3(worldX, worldY, worldZ);
         worldPos.add(this.camera.position);
         
-        console.log(`World position: x=${worldPos.x.toFixed(2)}, y=${worldPos.y.toFixed(2)}, z=${worldPos.z.toFixed(2)}`);
-        
         return worldPos;
     }
 
@@ -1256,12 +1168,6 @@ class ConstellationExperience {
         
         // 핀치 시작 이펙트
         this.createPinchStartEffect(handIndex, gestureInfo);
-        
-        // 햅틱 피드백 시뮬레이션
-        this.createHapticFeedback(handIndex);
-        
-        // 화면에 디버그 마커 표시
-        this.showDebugMarker(gestureInfo.pinchPosition, handIndex);
         
         // _28 모델 상태 확인
         if (this.isZoomed) {
@@ -1320,7 +1226,6 @@ class ConstellationExperience {
         this.showMessage('핀치를 유지하고 드래그하여 이동', 1500);
     }
 
-    // 패닝 종료
     onPinchEnd(handIndex) {
         const handLabel = handIndex === 0 ? "왼손" : "오른손";
         console.log(`${handLabel} 핀치 종료`);
@@ -1333,7 +1238,7 @@ class ConstellationExperience {
             console.log('패닝 종료');
             
             // 패닝 종료 시각적 효과
-            this.createPanningIndicator(false);
+            this.showPanningIndicator(false);
         }
     }
 
@@ -1392,50 +1297,6 @@ class ConstellationExperience {
         }
     }
 
-    createPanningIndicator(show) {
-        const indicator = document.getElementById('panning-indicator');
-        
-        if (show && !indicator) {
-            const div = document.createElement('div');
-            div.id = 'panning-indicator';
-            div.innerHTML = `
-                <div style="font-size: 30px;">✋</div>
-                <div style="font-size: 16px; margin-top: 5px;">이동 중</div>
-            `;
-            div.style.cssText = `
-                position: fixed;
-                bottom: 150px;
-                left: 50%;
-                transform: translateX(-50%);
-                text-align: center;
-                color: white;
-                background: rgba(0, 0, 0, 0.7);
-                padding: 10px 20px;
-                border-radius: 20px;
-                z-index: 1000;
-                pointer-events: none;
-                opacity: 0;
-                transition: opacity 0.3s;
-            `;
-            document.body.appendChild(div);
-            
-            setTimeout(() => {
-                div.style.opacity = '1';
-            }, 10);
-            
-        } else if (!show && indicator) {
-            indicator.style.opacity = '0';
-            setTimeout(() => {
-                indicator.remove();
-            }, 300);
-        }
-    }
-
-    onPinchEnd(handIndex) {
-        const handLabel = handIndex === 0 ? "왼손" : "오른손";
-        console.log(`${handLabel} 핀치 종료`);
-    }
-
     returnToOriginalModel(direction) {
         console.log(`${direction} 원래 모델로 복귀`);
         
@@ -1444,9 +1305,6 @@ class ConstellationExperience {
         this.isTwoHandsFisting = false;
         this.initialFistDistance = null;
 
-        // 패닝 상태도 리셋
-        this.resetPanning();
-        
         // 패닝 상태 리셋
         this.isPanning = false;
         this.panStartPosition = null;
@@ -1454,7 +1312,7 @@ class ConstellationExperience {
         
         // 인디케이터 제거
         this.showZoomIndicator(false);
-        this.createPanningIndicator(false);
+        this.showPanningIndicator(false);
         
         // 현재 확대 모델 제거
         if (this.currentModel) {
@@ -1489,29 +1347,20 @@ class ConstellationExperience {
             
             document.getElementById('status').textContent = `${direction.toUpperCase()} 구역 기본 보기로 복귀`;
         }
-    }
 
-    resetCameraPosition(onComplete) {
-        console.log('카메라 위치 리셋');
-        
-        const timeline = gsap.timeline({
-            onComplete: onComplete
-        });
-        
-        timeline.to(this.camera.position, {
-            x: this.initialCameraPosition.x,
-            y: this.initialCameraPosition.y,
-            z: this.initialCameraPosition.z,
-            duration: 1,
-            ease: "power2.out"
-        })
-        // .to(this.camera.rotation, {
-        //     x: 0,
-        //     y: 0,
-        //     z: 0,
-        //     duration: 1,
-        //     ease: "power2.out"
-        // }, "<"); // "<" means start at the same time as previous animation
+        const originalReturnToOriginalModel = ConstellationExperience.prototype.returnToOriginalModel;
+        ConstellationExperience.prototype.returnToOriginalModel = function(direction) {
+            // 기존 로직 실행
+            originalReturnToOriginalModel.call(this, direction);
+            
+            // 일반 설명으로 복원 및 스타일 복원
+            this.showDirectionDescription(direction);
+            this.restore28ModelStyle();
+            
+            console.log(`${direction} 원래 모델로 복귀 및 일반 설명 복원`);
+        };
+
+        console.log('_28 모델 상세 설명 시스템 로드 완료');
     }
 
     showMessage(text, duration = 2000) {
@@ -1563,15 +1412,11 @@ class ConstellationExperience {
         // 3D 좌표로 변환
         const worldPos = this.convertToWorldPosition(gestureInfo.pinchPosition, handIndex);
         
-        console.log(`핀치 이펙트 생성 - Hand ${handIndex}`);
-        console.log(`정규화 좌표: x=${gestureInfo.pinchPosition.x}, y=${gestureInfo.pinchPosition.y}`);
-        console.log(`월드 좌표: x=${worldPos.x.toFixed(2)}, y=${worldPos.y.toFixed(2)}, z=${worldPos.z.toFixed(2)}`);
-        
         // 메인 이펙트 그룹
         const effectGroup = new THREE.Group();
         effectGroup.position.copy(worldPos);
         
-        // 1. 작은 중심 글로우 구체 (1/5 크기)
+        // 작은 중심 글로우 구체
         const glowGeometry = new THREE.SphereGeometry(0.06, 32, 32);
         const glowMaterial = new THREE.MeshBasicMaterial({
             color: handIndex === 0 ? 0x00aaff : 0xff4444,
@@ -1581,7 +1426,7 @@ class ConstellationExperience {
         const glowSphere = new THREE.Mesh(glowGeometry, glowMaterial);
         effectGroup.add(glowSphere);
         
-        // 2. 포인트 라이트 (강도도 줄임)
+        // 포인트 라이트
         const pointLight = new THREE.PointLight(
             handIndex === 0 ? 0x00aaff : 0xff4444,
             1,
@@ -1589,15 +1434,14 @@ class ConstellationExperience {
         );
         effectGroup.add(pointLight);
         
-        // 3. 확장 링 이펙트
+        // 확장 링 이펙트
         this.createExpandingRings(effectGroup, handIndex);
         
-        // 4. 파티클 버스트
+        // 파티클 버스트
         this.createParticleBurst(effectGroup, handIndex);
         
         // 씬에 추가
         this.scene.add(effectGroup);
-        console.log('이펙트 그룹이 씬에 추가됨');
         
         // 이펙트 애니메이션
         this.animatePinchEffect(effectGroup, glowSphere, pointLight);
@@ -1624,7 +1468,7 @@ class ConstellationExperience {
             const ring = new THREE.Mesh(ringGeometry, ringMaterial);
             ring.lookAt(this.camera.position);
             
-            // 시간차 확장 애니메이션 (1/5 크기)
+            // 시간차 확장 애니메이션
             gsap.to(ring.scale, {
                 x: 1 + i * 0.4,
                 y: 1 + i * 0.4,
@@ -1666,7 +1510,7 @@ class ConstellationExperience {
             
             const particle = new THREE.Mesh(particleGeometry, particleMaterial);
             
-            // 랜덤 방향 벡터 (속도도 줄임)
+            // 랜덤 방향 벡터
             const theta = Math.random() * Math.PI * 2;
             const phi = Math.random() * Math.PI;
             const speed = 0.06 + Math.random() * 0.06;
@@ -1692,7 +1536,7 @@ class ConstellationExperience {
             // 위치 업데이트
             particle.position.add(particle.userData.velocity);
             
-            // 중력 효과 (줄임)
+            // 중력 효과
             particle.userData.velocity.y -= 0.001;
             
             // 페이드 아웃
@@ -1711,7 +1555,7 @@ class ConstellationExperience {
     }
 
     animatePinchEffect(effectGroup, glowSphere, pointLight) {
-        // 글로우 구체 펄스 애니메이션 (작은 스케일)
+        // 글로우 구체 펄스 애니메이션
         gsap.to(glowSphere.scale, {
             x: 1.4,
             y: 1.4,
@@ -1752,68 +1596,13 @@ class ConstellationExperience {
         }, 1000);
     }
 
-    showDebugMarker(normalizedPosition, handIndex) {
-        // 화면상에 핀치 위치 표시 (디버깅용)
-        const marker = document.createElement('div');
-        marker.style.cssText = `
-            position: fixed;
-            left: ${normalizedPosition.x * window.innerWidth}px;
-            top: ${normalizedPosition.y * window.innerHeight}px;
-            width: 20px;
-            height: 20px;
-            border-radius: 50%;
-            background: ${handIndex === 0 ? '#00aaff' : '#ff4444'};
-            border: 2px solid white;
-            pointer-events: none;
-            z-index: 10000;
-            transform: translate(-50%, -50%);
-        `;
-        
-        document.body.appendChild(marker);
-        
-        // 1초 후 제거
-        setTimeout(() => {
-            document.body.removeChild(marker);
-        }, 1000);
-    }
-
-    createHapticFeedback(handIndex) {
-        // 화면 가장자리에 시각적 피드백
-        const feedbackDiv = document.createElement('div');
-        feedbackDiv.style.cssText = `
-            position: fixed;
-            ${handIndex === 0 ? 'left' : 'right'}: 0;
-            top: 50%;
-            transform: translateY(-50%);
-            width: 5px;
-            height: 100px;
-            background: ${handIndex === 0 ? '#00aaff' : '#ff4444'};
-            opacity: 0;
-            pointer-events: none;
-            z-index: 1000;
-        `;
-        
-        document.body.appendChild(feedbackDiv);
-        
-        // 플래시 애니메이션
-        gsap.to(feedbackDiv, {
-            opacity: 0.8,
-            duration: 0.1,
-            yoyo: true,
-            repeat: 1,
-            onComplete: () => {
-                document.body.removeChild(feedbackDiv);
-            }
-        });
-    }
-
     updateContinuousPinchEffect(handIndex, gestureInfo, landmarks) {
         if (!gestureInfo.pinchPosition) return;
         
         // 3D 좌표로 변환
         const worldPos = this.convertToWorldPosition(gestureInfo.pinchPosition, handIndex);
         
-        // 작은 글로우 효과 (1/5 크기)
+        // 작은 글로우 효과
         const glowGeometry = new THREE.SphereGeometry(0.02 * gestureInfo.pinchStrength, 8, 8);
         const glowMaterial = new THREE.MeshBasicMaterial({
             color: handIndex === 0 ? 0x00aaff : 0xff4444,
@@ -1858,6 +1647,26 @@ class ConstellationExperience {
             
             oscillator.start(audioContext.currentTime);
             oscillator.stop(audioContext.currentTime + 0.1);
+        } catch (error) {
+            console.log('오디오 재생 실패:', error);
+        }
+    }
+
+    playGestureSound(frequency, duration) {
+        try {
+            const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            const oscillator = audioContext.createOscillator();
+            const gainNode = audioContext.createGain();
+            
+            oscillator.connect(gainNode);
+            gainNode.connect(audioContext.destination);
+            
+            oscillator.frequency.value = frequency;
+            gainNode.gain.setValueAtTime(0.1, audioContext.currentTime);
+            gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + duration);
+            
+            oscillator.start(audioContext.currentTime);
+            oscillator.stop(audioContext.currentTime + duration);
         } catch (error) {
             console.log('오디오 재생 실패:', error);
         }
@@ -1926,70 +1735,6 @@ class ConstellationExperience {
             rightIndicator.style.transform = `scale(${1 + this.handStates[1].pinchStrength * 0.5})`;
         } else {
             rightIndicator.style.display = 'none';
-        }
-
-        // 줌 상태 표시 (_28 모델일 때만)
-        if (this.isZoomed && this.isTwoHandsPinching) {
-            const zoomIndicator = document.getElementById('zoom-indicator');
-            if (!zoomIndicator) {
-                const indicator = document.createElement('div');
-                indicator.id = 'zoom-indicator';
-                indicator.style.cssText = `
-                    position: fixed;
-                    top: 50%;
-                    left: 50%;
-                    transform: translate(-50%, -50%);
-                    font-size: 24px;
-                    color: white;
-                    background: rgba(0,0,0,0.7);
-                    padding: 10px 20px;
-                    border-radius: 20px;
-                    pointer-events: none;
-                    z-index: 1000;
-                `;
-                document.body.appendChild(indicator);
-            }
-            
-            const zoomPercent = Math.round(this.currentZoom * 100);
-            document.getElementById('zoom-indicator').textContent = `줌: ${zoomPercent}%`;
-        } else {
-            const zoomIndicator = document.getElementById('zoom-indicator');
-            if (zoomIndicator) {
-                zoomIndicator.remove();
-            }
-        }
-        // 현재 모드 표시
-        const modeIndicator = document.getElementById('mode-indicator');
-        if (!modeIndicator) {
-            const indicator = document.createElement('div');
-            indicator.id = 'mode-indicator';
-            indicator.style.cssText = `
-                position: fixed;
-                top: 10px;
-                left: 50%;
-                transform: translateX(-50%);
-                background: rgba(0, 0, 0, 0.7);
-                color: white;
-                padding: 5px 15px;
-                border-radius: 15px;
-                font-size: 14px;
-                z-index: 100;
-            `;
-            document.body.appendChild(indicator);
-        }
-        
-        const indicator = document.getElementById('mode-indicator');
-        if (indicator) {
-            if (this.isZoomed) {
-                indicator.textContent = `${this.currentDirection.toUpperCase()}_28 모드`;
-                indicator.style.borderColor = '#ffff00';
-            } else if (this.currentDirection !== 'center') {
-                indicator.textContent = `${this.currentDirection.toUpperCase()} 모드`;
-                indicator.style.borderColor = '#ffffff';
-            } else {
-                indicator.textContent = '중앙 모드';
-                indicator.style.borderColor = '#808080';
-            }
         }
 
         // _28 모델 상태 표시
@@ -2166,10 +1911,229 @@ class ConstellationExperience {
         this.camera.updateProjectionMatrix();
         this.renderer.setSize(window.innerWidth, window.innerHeight);
     }
+
+    // 별자리 설명 메서드들 (간단한 버전)
+    showSeasonDescription(season) {
+        const seasonDescriptions = {
+            spring: {
+                title: '동방청룡 (東方靑龍)',
+                content: '동쪽을 지키는 푸른 용의 별자리입니다. 봄철 밤하늘에서 관찰할 수 있으며, 각수부터 기수까지 7개의 별자리로 구성됩니다.',
+                constellations: ['각수', '항수', '저수', '방수', '심수', '미수', '기수']
+            },
+            summer: {
+                title: '남방주작 (南方朱雀)',
+                content: '남쪽을 지키는 붉은 새의 별자리입니다. 여름철 밤하늘에서 관찰할 수 있으며, 정수부터 진수까지 7개의 별자리로 구성됩니다.',
+                constellations: ['정수', '귀수', '류수', '성수', '장수', '익수', '진수']
+            },
+            autumn: {
+                title: '서방백호 (西方白虎)',
+                content: '서쪽을 지키는 흰 호랑이의 별자리입니다. 가을철 밤하늘에서 관찰할 수 있으며, 규수부터 삼수까지 7개의 별자리로 구성됩니다.',
+                constellations: ['규수', '루수', '위수', '묘수', '필수', '자수', '삼수']
+            },
+            winter: {
+                title: '북방현무 (北方玄武)',
+                content: '북쪽을 지키는 거북과 뱀의 별자리입니다. 겨울철 밤하늘에서 관찰할 수 있으며, 두수부터 벽수까지 7개의 별자리로 구성됩니다.',
+                constellations: ['두수', '우수', '여수', '허수', '위수', '실수', '벽수']
+            }
+        };
+        
+        const info = seasonDescriptions[season];
+        if (!info) return;
+        
+        const panel = document.getElementById('description-panel');
+        const title = document.getElementById('description-title');
+        const content = document.getElementById('description-content');
+        const sub = document.getElementById('description-sub');
+        
+        if (title) title.textContent = info.title;
+        if (content) {
+            content.innerHTML = `
+                ${info.content}<br><br>
+                <strong>구성 별자리:</strong><br>
+                ${info.constellations.join(' → ')}
+            `;
+        }
+        if (sub) sub.textContent = '각 별자리를 핀치하여 자세한 정보를 확인하세요.';
+        
+        if (panel) panel.style.opacity = '1';
+    }
+
+    resetToDefaultDescription() {
+        const panel = document.getElementById('description-panel');
+        const title = document.getElementById('description-title');
+        const content = document.getElementById('description-content');
+        const sub = document.getElementById('description-sub');
+        
+        if (title) title.textContent = '천상열차분야지도';
+        if (content) {
+            content.textContent = '조선 초기에 제작된 석각 천문도로, 태조 4년(1395년)에 만들어진 우리나라의 대표적인 천문 유물입니다. 하늘의 별자리를 돌에 새긴 것으로, 당시의 천문학 수준을 보여주는 중요한 문화재입니다.';
+        }
+        if (sub) sub.textContent = '손을 카메라 앞에 위치시키고 핀치 제스처로 탐험을 시작하세요.';
+        
+        if (panel) panel.style.opacity = '1';
+    }
 }
+
+// 🔧 클래스 외부에서 메서드 확장 (올바른 방식)
+Object.assign(ConstellationExperience.prototype, {
+    
+    // 방향 선택 시 계절 설명 표시
+    showDirectionDescription(direction) {
+        const directionToSeason = {
+            east: 'spring',
+            south: 'summer',
+            west: 'autumn',
+            north: 'winter'
+        };
+        
+        const season = directionToSeason[direction];
+        if (season) {
+            this.showSeasonDescription(season);
+            this.selectedSeason = season;
+        }
+    },
+    
+    // 기본 설명으로 복원
+    resetDescription() {
+        this.resetToDefaultDescription();
+        this.selectedSeason = null;
+    },
+
+    // _28 모델 진입 시 상세 설명 표시
+    show28ModelDescription(direction) {
+        const descriptions28 = {
+            east: {
+                title: '동방칠수 상세',
+                symbol: '🐉',
+                content: `청룡의 형상을 이루는 동방칠수는 봄철의 대표적인 별자리입니다. 각각은 용의 몸, 용의 목, 가슴 등 용의 각 부위를 나타내며 고대 중국인들은 이 용이 동방을 지키며 농사와 생명력을 관장한다고 믿었습니다. 농서 시대를 알리는 중요한 별자리들로 새로운 시작을 상징하는 데 사용되어왔습니다.`,
+                detailed: `현재드래그 이동 | 양손 주먹: 확대/축소 | V 제스처: 돌아가기`,
+                constellations: [
+                    '각수(角宿) - 용의 뿔',
+                    '항수(亢宿) - 용의 목',
+                    '저수(氐宿) - 용의 가슴',
+                    '방수(房宿) - 용의 배',
+                    '심수(心宿) - 용의 심장',
+                    '미수(尾宿) - 용의 꼬리',
+                    '기수(箕宿) - 키(곡식을 까부르는 도구)'
+                ]
+            },
+            
+            south: {
+                title: '남방칠수 상세',
+                symbol: '🔥',
+                content: `주작(불새)의 형상을 이루는 남방칠수는 여름의 대표적인 별자리입니다. 주작은 우아하고 우아한 불새의 모습으로 여름의 열정과 성장을 상징합니다. 고대인들은 이 별자리가 남쪽 하늘을 지키며 풍요로운 여름철과 농작물의 성장을 돕는다고 믿었습니다.`,
+                detailed: `현재드래그 이동 | 양손 주먹: 확대/축소 | V 제스처: 돌아가기`,
+                constellations: [
+                    '정수(井宿) - 우물',
+                    '귀수(鬼宿) - 귀신',
+                    '류수(柳宿) - 버들나무',
+                    '성수(星宿) - 별',
+                    '장수(張宿) - 활을 당기다',
+                    '익수(翼宿) - 날개',
+                    '진수(軫宿) - 수레'
+                ]
+            },
+            
+            west: {
+                title: '서방칠수 상세',
+                symbol: '🐅',
+                content: `백호의 형상을 이루는 서방칠수는 가을의 대표적인 별자리입니다. 백호는 사납고 강력한 힘을 지닌 흰 호랑이의 모습으로 가을의 엄숙함과 추수를 상징합니다. 고대인들은 서쪽 하늘을 지키며 전쟁과 용맹, 그리고 가을 추수의 결실을 관장한다고 믿었습니다.`,
+                detailed: `현재드래그 이동 | 양손 주먹: 확대/축소 | V 제스처: 돌아가기`,
+                constellations: [
+                    '규수(奎宿) - 다리를 벌리다',
+                    '루수(婁宿) - 묶다',
+                    '위수(胃宿) - 위',
+                    '묘수(昴宿) - 좀생이별(플레이아데스)',
+                    '필수(畢宿) - 그물',
+                    '자수(觜宿) - 부리',
+                    '삼수(參宿) - 참(오리온자리)'
+                ]
+            },
+            
+            north: {
+                title: '북방칠수 상세',
+                symbol: '🐢',
+                content: `현무(거북과 뱀)의 형상을 이루는 북방칠수는 겨울의 대표적인 별자리입니다. 현무는 거북과 뱀이 합쳐진 신비로운 동물로 겨울의 정적과 지혜를 상징합니다. 고대인들은 이 별자리가 북쪽 하늘을 지키며 겨울철의 혹독함을 이겨내는 인내와 지혜를 관장한다고 믿었습니다.`,
+                detailed: `현재드래그 이동 | 양손 주먹: 확대/축소 | V 제스처: 돌아가기`,
+                constellations: [
+                    '두수(斗宿) - 북두칠성',
+                    '우수(牛宿) - 소(견우)',
+                    '여수(女宿) - 여자(직녀)',
+                    '허수(虛宿) - 빈 곳',
+                    '위수(危宿) - 위험',
+                    '실수(室宿) - 방',
+                    '벽수(壁宿) - 벽'
+                ]
+            }
+        };
+        
+        const info = descriptions28[direction];
+        if (!info) return;
+        
+        const panel = document.getElementById('description-panel');
+        const title = document.getElementById('description-title');
+        const content = document.getElementById('description-content');
+        const sub = document.getElementById('description-sub');
+        
+        if (title) title.textContent = info.title;
+        if (content) {
+            content.innerHTML = `
+                <strong>${info.symbol} ${info.title}</strong><br><br>
+                ${info.content}<br><br>
+                <strong>구성 별자리 (28수):</strong><br>
+                ${info.constellations.map(constellation => `• ${constellation}`).join('<br>')}
+            `;
+        }
+        if (sub) sub.textContent = info.detailed;
+        
+        if (panel) {
+            panel.style.opacity = '1';
+            // _28 모델용 특별한 스타일 적용
+            panel.style.borderColor = 'rgba(255, 215, 0, 0.6)';
+            panel.style.boxShadow = '0 8px 32px rgba(255, 215, 0, 0.3)';
+        }
+        
+        console.log(`${direction} _28 모델 상세 설명 표시`);
+    },
+    
+    // _28 모델에서 나갈 때 스타일 복원
+    restore28ModelStyle() {
+        const panel = document.getElementById('description-panel');
+        if (panel) {
+            panel.style.borderColor = 'rgba(255, 255, 255, 0.3)';
+            panel.style.boxShadow = '0 8px 32px rgba(0, 0, 0, 0.6)';
+        }
+    }
+});
+
+// 기존 메서드들을 확장하여 UI 업데이트 추가
+const originalSwitchModel = ConstellationExperience.prototype.switchModel;
+ConstellationExperience.prototype.switchModel = function(newDirection) {
+    // 기존 로직 실행
+    originalSwitchModel.call(this, newDirection);
+    
+    // UI 업데이트 추가
+    if (newDirection === 'center') {
+        this.resetDescription();
+    } else {
+        this.showDirectionDescription(newDirection);
+    }
+};
+
+// resetView 메서드 확장
+const originalResetView = ConstellationExperience.prototype.resetView;
+ConstellationExperience.prototype.resetView = function() {
+    // 기존 로직 실행
+    originalResetView.call(this);
+    
+    // UI 리셋
+    this.resetDescription();
+};
 
 // 애플리케이션 시작
 window.addEventListener('load', () => {
     window.constellationApp = new ConstellationExperience();
     window.constellationApp.init();
+    
+    console.log('ConstellationMain 통합 패치 적용 완료');
 });
