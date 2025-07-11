@@ -32,7 +32,9 @@ jobs:
       - name: Copy static files
         run: |
           mkdir -p dist
-          cp -r index.html js models dist/
+          cp -r index.html dist/
+          cp -r js dist/
+          cp -r models dist/
           if [ -d textures ]; then cp -r textures dist/; fi
       - name: Deploy to Azure Static Web Apps
         uses: Azure/static-web-apps-deploy@v1
